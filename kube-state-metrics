@@ -1,0 +1,16 @@
+In addition to monitoring the CPU and memory usage of cluster nodes and pods, you’ll need a way to collect metrics tracking the high-level status of the cluster and its constituent objects.
+
+As covered in Part 2, the Kubernetes API server exposes data about the count, health, and availability of pods, nodes, and other Kubernetes objects. By installing the kube-state-metrics add-on in your cluster, you can consume these metrics more easily to help surface issues with cluster infrastructure, resource constraints, or pod scheduling.
+
+Add kube-state-metrics to your cluster
+The kube-state-metrics service provides additional cluster information that Metrics Server does not. Metrics Server exposes statistics about the resource utilization of Kubernetes objects, whereas kube-state-metrics listens to the Kubernetes API and generates metrics about the state of Kubernetes objects: node status, node capacity (CPU and memory), number of desired/available/unavailable/updated replicas per Deployment, pod status (e.g., waiting, running, ready), and so on. The kube-state-metrics docs detail all the metrics that are available once kube-state-metrics is deployed.
+
+Deploy kube-state-metrics
+The kube-state-metrics add-on runs as a Kubernetes Deployment with a single replica. To create the Deployment, service, and associated permissions, you can use a set of manifests from the official kube-state-metrics project. To download the manifests and apply them to your cluster, run the following series of commands:
+
+
+git clone https://github.com/kubernetes/kube-state-metrics.git
+cd kube-state-metrics
+kubectl apply -f examples/standard
+
+Note that some environments, including GKE clusters, have restrictive permissions settings that require a different installation approach. Details on deploying kube-state-metrics to GKE clusters and other restricted environments are available in the kube-state-metrics docs.
